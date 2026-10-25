@@ -8,7 +8,10 @@ for ax, (pat, churn, title) in zip(axes, CASES):
         s = sub[sub.method == m]
         ax.plot(s.air, s.pdr, "o--", color=METHOD_COLORS[m], label=m, ms=7, lw=0.8)
     ax.axhline(1 - LOSS_MAX, color="#e03131", ls="--", lw=1)
-    ax.set_xscale("log"); ax.set_xlabel("эфир на доставленный пакет, с (лог. шкала)")
+    ax.set_xscale("log"); ax.minorticks_off()
+    ticks = [0.3, 0.5, 1, 2, 3, 4]
+    ax.set_xticks(ticks); ax.set_xticklabels([f"{t:g}" for t in ticks])
+    ax.set_xlabel("эфир на доставленный пакет, с (лог. шкала)")
     ax.set_title(title, fontsize=9); ax.grid(alpha=.3)
 axes[0].set_ylabel("доставлено за 20 с"); axes[0].legend(fontsize=8)
 plt.tight_layout(); plt.show()
