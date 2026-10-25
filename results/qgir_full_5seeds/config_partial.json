@@ -1,0 +1,202 @@
+[
+  {
+    "run_id": "s00_qgir_101",
+    "scenario": {
+      "name": "mesh100_0.02_cold",
+      "topology": "mesh100",
+      "sim_time_s": 1800,
+      "hop_limit": 16,
+      "payload_bytes": 20,
+      "traffic": {
+        "flows": "default",
+        "rate_pps": 0.02,
+        "start_s": 0,
+        "stop_margin_s": 20
+      },
+      "churn": {
+        "scheduled": [],
+        "random_nodes": null,
+        "mtbf_s": 120.0,
+        "mttr_s": 30.0,
+        "protect": [],
+        "start_s": 0.0
+      },
+      "node_cfg": {
+        "mcu": {
+          "name": "nRF52840",
+          "t_rx_proc_s": 0.004,
+          "t_tx_prep_s": 0.002,
+          "queue_capacity": 8,
+          "i_active_ma": 3.3,
+          "i_idle_ma": 0.003
+        },
+        "battery_j": "inf",
+        "queue_capacity": 16,
+        "seen_cache_capacity": 64,
+        "duty_cycle_limit": 0.1,
+        "duty_cycle_window_s": 60.0,
+        "csma": true,
+        "csma_backoff_s": [
+          0.01,
+          0.1
+        ],
+        "csma_max_attempts": 8,
+        "flood_jitter_s": [
+          0.0,
+          0.2
+        ],
+        "max_retries": 3,
+        "ack_guard_s": 0.03,
+        "sleep_enabled": false,
+        "sleep_period_s": 10.0,
+        "awake_fraction": 0.5,
+        "header_bytes": 12,
+        "route_bytes_per_hop": 1,
+        "ack_bytes": 6
+      },
+      "radio": {
+        "chip": "SX1262",
+        "sf": 7,
+        "bw_hz": 125000,
+        "cr": 1,
+        "preamble_symbols": 8,
+        "explicit_header": true,
+        "crc_on": true,
+        "low_dr_optimize": null,
+        "voltage_v": 3.3,
+        "tx_power_dbm": 22,
+        "i_tx_ma": 118.0,
+        "i_rx_ma": 4.6,
+        "i_sleep_ma": 0.0006
+      },
+      "channel": {
+        "p_max": 0.99,
+        "p_min": 0.7,
+        "d0_frac": 0.5
+      },
+      "topo_kwargs": {}
+    },
+    "qgir": {
+      "deadline_s": 20.0,
+      "max_candidates": 8,
+      "max_neighbors": 32,
+      "max_destinations": 100,
+      "alpha": 0.35,
+      "link_alpha": 0.2,
+      "initial_attempt_p": 0.85,
+      "epsilon": 0.02,
+      "hello_period_s": 8.0,
+      "hello_entries": 4,
+      "route_ttl_s": 600.0,
+      "neighbor_ttl_s": 40.0,
+      "delay_margin_s": 0.5,
+      "update_cpu_s": 0.0002,
+      "route_record_bytes": 48,
+      "neighbor_record_bytes": 32,
+      "reserved_runtime_bytes": 100000,
+      "checkpoint_period_s": 0.0
+    },
+    "method": "qgir",
+    "seed": 101
+  },
+  {
+    "run_id": "s00_qgir_102",
+    "scenario": {
+      "name": "mesh100_0.02_cold",
+      "topology": "mesh100",
+      "sim_time_s": 1800,
+      "hop_limit": 16,
+      "payload_bytes": 20,
+      "traffic": {
+        "flows": "default",
+        "rate_pps": 0.02,
+        "start_s": 0,
+        "stop_margin_s": 20
+      },
+      "churn": {
+        "scheduled": [],
+        "random_nodes": null,
+        "mtbf_s": 120.0,
+        "mttr_s": 30.0,
+        "protect": [],
+        "start_s": 0.0
+      },
+      "node_cfg": {
+        "mcu": {
+          "name": "nRF52840",
+          "t_rx_proc_s": 0.004,
+          "t_tx_prep_s": 0.002,
+          "queue_capacity": 8,
+          "i_active_ma": 3.3,
+          "i_idle_ma": 0.003
+        },
+        "battery_j": "inf",
+        "queue_capacity": 16,
+        "seen_cache_capacity": 64,
+        "duty_cycle_limit": 0.1,
+        "duty_cycle_window_s": 60.0,
+        "csma": true,
+        "csma_backoff_s": [
+          0.01,
+          0.1
+        ],
+        "csma_max_attempts": 8,
+        "flood_jitter_s": [
+          0.0,
+          0.2
+        ],
+        "max_retries": 3,
+        "ack_guard_s": 0.03,
+        "sleep_enabled": false,
+        "sleep_period_s": 10.0,
+        "awake_fraction": 0.5,
+        "header_bytes": 12,
+        "route_bytes_per_hop": 1,
+        "ack_bytes": 6
+      },
+      "radio": {
+        "chip": "SX1262",
+        "sf": 7,
+        "bw_hz": 125000,
+        "cr": 1,
+        "preamble_symbols": 8,
+        "explicit_header": true,
+        "crc_on": true,
+        "low_dr_optimize": null,
+        "voltage_v": 3.3,
+        "tx_power_dbm": 22,
+        "i_tx_ma": 118.0,
+        "i_rx_ma": 4.6,
+        "i_sleep_ma": 0.0006
+      },
+      "channel": {
+        "p_max": 0.99,
+        "p_min": 0.7,
+        "d0_frac": 0.5
+      },
+      "topo_kwargs": {}
+    },
+    "qgir": {
+      "deadline_s": 20.0,
+      "max_candidates": 8,
+      "max_neighbors": 32,
+      "max_destinations": 100,
+      "alpha": 0.35,
+      "link_alpha": 0.2,
+      "initial_attempt_p": 0.85,
+      "epsilon": 0.02,
+      "hello_period_s": 8.0,
+      "hello_entries": 4,
+      "route_ttl_s": 600.0,
+      "neighbor_ttl_s": 40.0,
+      "delay_margin_s": 0.5,
+      "update_cpu_s": 0.0002,
+      "route_record_bytes": 48,
+      "neighbor_record_bytes": 32,
+      "reserved_runtime_bytes": 100000,
+      "checkpoint_period_s": 0.0
+    },
+    "method": "qgir",
+    "seed": 102
+  }
+]
