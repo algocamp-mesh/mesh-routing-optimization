@@ -8,6 +8,7 @@ class AodvConfig:
     ttl_increment: int = 2
     ttl_threshold: int = 7
     timeout_buffer: int = 2
+    ring_from_known_hops: bool = False     # RFC 6.4: кольцо начинается с известного числа переходов + TTL_INCREMENT
     rreq_retries: int = 2                  # RREQ_RETRIES: повторов поиска с полным TTL
     rreq_backoff: bool = True              # двоичная экспоненциальная задержка между повторами
     intermediate_reply: bool = True        # узел со свежим маршрутом отвечает на RREQ сам

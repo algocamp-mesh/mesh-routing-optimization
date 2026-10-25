@@ -55,13 +55,13 @@ if __name__ == "__main__":
             pd = G["pd"]
 
             def run_grid(name, specs):
-                path = os.path.join("results", name + ".csv")
+                path = os.path.join(G.get("RESULTS_DIR", "results"), name + ".csv")
                 if os.path.exists(path) and not FORCE:
                     return pd.read_csv(path)
                 t1 = time.time()
                 df = pd.DataFrame(list(ex.map(_run, specs, chunksize=1)))
                 df = df.fillna({c: 0 for c in df.columns if c.startswith("fail_")})
-                os.makedirs("results", exist_ok=True)
+                os.makedirs(os.path.dirname(path), exist_ok=True)
                 df.to_csv(path, index=False)
                 df = pd.read_csv(path)                 # как в блокноте: дальше работаем с прочитанным CSV
                 print(f"[{name}] {len(specs)} прогонов за {time.time() - t1:.0f} с", flush=True)

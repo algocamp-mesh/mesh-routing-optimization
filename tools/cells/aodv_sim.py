@@ -189,6 +189,9 @@ class AodvSimulator(Simulator):
     def _start_discovery(self, n, dst, ttl0=None):
         ring = self.ac.expanding_ring and ttl0 is None
         ttl = self.ac.ttl_start if ring else min(ttl0 or self.net_diam, self.net_diam)
+        old = self.aodv[n].routes.get(dst)
+        if ring and self.ac.ring_from_known_hops and old is not None:   # путь когда-то был: сразу на его длину
+            ttl = min(old.hops + self.ac.ttl_increment, self.net_diam)
         st = self.aodv[n]
         st.discovery[dst] = dict(ttl=ttl, retries=0, ring=ring, token=0, t0=self.t)
         st.last_try[dst] = self.t
@@ -365,6 +368,8 @@ class AodvSimulator(Simulator):
             return
         self._rreq_mark(st, key)
         if r.id == frame.dst and c.get("data") is not None:     # пакет приехал вместе с поиском
+            if self.packets[c["data"].pid]["t_del"] is None:
+                self.stats["delivered_in_rreq"] += 1
             self._deliver(replace(c["data"], hops=frame.hops), r)
         if r.id == frame.dst and self.ac.rrep_delay_s > 0:  # получатель ждёт другие копии
             st.collect[key] = dict(u=u, hops=hops, cost=cost, seq=c["orig_seq"], dst_seq=c["dst_seq"])
@@ -581,7 +586,7 @@ class AodvSimulator(Simulator):
             out["air_share_" + k] = self.air[k] / air_total if air_total else 0.0
         for k in ("discoveries", "discovery_failed", "rrep_intermediate", "rreq_suppressed",
                   "link_breaks", "local_repairs", "rerr_sent", "hello_link_breaks",
-                  "piggybacked", "parked", "carry_wakeups", "carry_retries"):
+                  "piggybacked", "parked", "carry_wakeups", "carry_retries", "delivered_in_rreq"):
             out[k] = self.stats[k]
         out["discovery_time_mean_s"] = (sum(self.discovery_times) / len(self.discovery_times)
                                         if self.discovery_times else float("nan"))
