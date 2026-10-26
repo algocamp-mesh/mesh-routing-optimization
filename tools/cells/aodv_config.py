@@ -47,6 +47,13 @@ class AodvConfig:
     rreq_pack_selective: bool = False      # повторять, только если промолчал кто-то из недавно слышанных соседей
     rreq_pack_neighbor_s: float = 30.0     # «недавно слышанный» сосед — за последние столько секунд
     rreq_pack_max_degree: Optional[int] = None  # повторять, только если у узла не больше стольких соседей (цепочка, мост)
+    # Исследование 5: идеи из DSR
+    multipath_k: int = 1                   # хранить до k путей к получателю (как AOMDV): обрыв — переход на запасной
+    multipath_extra_hops: int = 1          # запасной путь не длиннее основного больше чем на столько переходов
+    overhear_rrep: bool = False            # запоминать маршрут из чужого RREP, услышанного в эфире
+    overhear_data: bool = False            # чужой DATA через соседа продлевает наш маршрут к тому же получателю
+    overhear_max_etx: Optional[float] = None   # подслушивать только у соседа с хорошим каналом (ETX не больше)
+    overhear_no_ireply: bool = False       # по подслушанному маршруту не отвечать на чужие RREQ
     # HELLO
     hello_interval_s: Optional[float] = None   # None — без HELLO, обрыв определяется по отсутствию ACK
     allowed_hello_loss: int = 2

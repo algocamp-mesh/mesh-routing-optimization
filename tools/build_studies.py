@@ -14,6 +14,8 @@ STUDIES = {
                                                             "ada_exp_intro.md"], exps="ada_x*"),
     "4_reliable_rreq": dict(intro="rel_intro.md", insert=["base_hybrid.md", "hyb_sim.py", "ada_sim.py", "rel_idea.md",
                                                           "rel_sim.py", "rel_exp_intro.md"], exps="rel_x*"),
+    "5_dsr_ideas": dict(intro="dsr_intro.md", insert=["base_plus.md", "hyb_sim.py", "ada_sim.py", "rel_sim.py",
+                                                      "dsr_idea.md", "dsr_sim.py", "dsr_exp_intro.md"], exps="dsr_x*"),
 }
 
 

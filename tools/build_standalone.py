@@ -1,10 +1,10 @@
 """Собирает hybrid_plus.py — один файл с симулятором и итоговым вариантом hybrid_plus.
-Код берётся из ячеек 4_reliable_rreq.ipynb (до общих функций экспериментов включительно), без рисунков и проверок.
-Запуск: python tools/build_standalone.py   (после python tools/build_studies.py 4_reliable_rreq)"""
+Код берётся из ячеек 5_dsr_ideas.ipynb (до общих функций экспериментов включительно), без рисунков и проверок.
+Запуск: python tools/build_standalone.py   (после python tools/build_studies.py 5_dsr_ideas)"""
 import json, pathlib
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
-SRC = ROOT / "4_reliable_rreq.ipynb"
+SRC = ROOT / "5_dsr_ideas.ipynb"
 DST = ROOT / "hybrid_plus.py"
 HELPERS = "# EXP: общие функции"
 
@@ -25,6 +25,9 @@ HEADER = '''"""hybrid_plus — итоговый вариант маршрути�
                 + бюджет эфира                      (исследование 3: hybrid_dc)
                 + надёжный RREQ на цепочках         (исследование 4: hybrid_plus)
 
+hybrid_ovh  = hybrid_plus + подслушивание чужих RREP (исследование 5) — лучший вариант по итогам всех исследований,
+              запускается через --methods hybrid_ovh
+
 Один файл: модель LoRa, канал, узел, ядро дискретно-событийного симулятора, AODV со всеми механизмами,
 контрольные методы (затопление, затопление ×3, эталон Дейкстры). Параметры итогового варианта —
 AODV_PRESETS["hybrid_plus"]; их можно вывести: python hybrid_plus.py --config
@@ -32,11 +35,11 @@ AODV_PRESETS["hybrid_plus"]; их можно вывести: python hybrid_plus.
 Примеры:
     python hybrid_plus.py                                    # hybrid_plus, техника, случайные пары, 0,2 пак/с, 10 повторов
     python hybrid_plus.py --topo rwp20_walk --pattern sink   # пешеходы, все шлют узлу 0
-    python hybrid_plus.py --methods hybrid_plus,dijkstra,flooding --rate 0.5 --seeds 1-20
+    python hybrid_plus.py --methods hybrid_ovh,hybrid_plus,dijkstra --rate 0.5 --seeds 1-20
     python hybrid_plus.py --topo line10 --pattern default    # неподвижная линия из исходного симулятора
 
 Зависимости: Python 3.10+, pandas, matplotlib.
-Файл сгенерирован из блокнота 4_reliable_rreq.ipynb скриптом tools/build_standalone.py — правки вносить в tools/cells/.
+Файл сгенерирован из блокнота 5_dsr_ideas.ipynb скриптом tools/build_standalone.py — правки вносить в tools/cells/.
 """
 '''
 
@@ -66,7 +69,7 @@ def main():
         sys.stdout.reconfigure(encoding="utf-8")
     p = argparse.ArgumentParser(description="hybrid_plus и контрольные методы на сценариях исследования")
     p.add_argument("--methods", default="hybrid_plus",
-                   help="через запятую: hybrid_plus, hybrid_dc, hybrid, aodv_lora, aodv_rfc, flooding, flooding_x3, dijkstra")
+                   help="через запятую: hybrid_ovh, hybrid_plus, hybrid_dc, hybrid, aodv_lora, aodv_rfc, flooding, flooding_x3, dijkstra")
     p.add_argument("--topo", default="rwp20_vehicle", help="rwp20_walk | rwp20_vehicle | rwp20_drone | line10 | grid4x4 | …")
     p.add_argument("--pattern", default="random", help="random (случайные пары) | sink (все → узел 0) | default (поток топологии)")
     p.add_argument("--rate", type=float, default=0.2, help="суммарный трафик, пакетов/с на всю сеть")
@@ -74,10 +77,11 @@ def main():
     p.add_argument("--seeds", default="1-10", help="например 1-10 или 1,2,5")
     p.add_argument("--n", type=int, default=None, help="число узлов (для rwp20_*)")
     p.add_argument("--area", type=float, default=None, help="сторона квадрата, м (для rwp20_*)")
-    p.add_argument("--config", action="store_true", help="показать параметры hybrid_plus и выйти")
+    p.add_argument("--config", action="store_true", help="показать параметры hybrid_plus и hybrid_ovh и выйти")
     a = p.parse_args()
     if a.config:
         _show_config("hybrid_plus")
+        _show_config("hybrid_ovh")
         return
     rows = []
     for m in a.methods.split(","):
@@ -119,7 +123,7 @@ for c in nb["cells"]:
     parts.append(clean(s))
     if s.startswith(HELPERS):
         break
-assert any(p.startswith("# ⚙️ Исследование 4") for p in parts), "нет ячейки hybrid_plus"
+assert any(p.startswith("# ⚙️ Исследование 5") for p in parts), "нет ячейки hybrid_ovh"
 
 body = "\n\n\n".join(parts)
 body = body.replace("from dataclasses import dataclass, field, replace", "from dataclasses import dataclass, field, fields, replace")

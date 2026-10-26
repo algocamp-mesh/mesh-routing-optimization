@@ -7,6 +7,9 @@
                 + бюджет эфира                      (исследование 3: hybrid_dc)
                 + надёжный RREQ на цепочках         (исследование 4: hybrid_plus)
 
+hybrid_ovh  = hybrid_plus + подслушивание чужих RREP (исследование 5) — лучший вариант по итогам всех исследований,
+              запускается через --methods hybrid_ovh
+
 Один файл: модель LoRa, канал, узел, ядро дискретно-событийного симулятора, AODV со всеми механизмами,
 контрольные методы (затопление, затопление ×3, эталон Дейкстры). Параметры итогового варианта —
 AODV_PRESETS["hybrid_plus"]; их можно вывести: python hybrid_plus.py --config
@@ -14,11 +17,11 @@ AODV_PRESETS["hybrid_plus"]; их можно вывести: python hybrid_plus.
 Примеры:
     python hybrid_plus.py                                    # hybrid_plus, техника, случайные пары, 0,2 пак/с, 10 повторов
     python hybrid_plus.py --topo rwp20_walk --pattern sink   # пешеходы, все шлют узлу 0
-    python hybrid_plus.py --methods hybrid_plus,dijkstra,flooding --rate 0.5 --seeds 1-20
+    python hybrid_plus.py --methods hybrid_ovh,hybrid_plus,dijkstra --rate 0.5 --seeds 1-20
     python hybrid_plus.py --topo line10 --pattern default    # неподвижная линия из исходного симулятора
 
 Зависимости: Python 3.10+, pandas, matplotlib.
-Файл сгенерирован из блокнота 4_reliable_rreq.ipynb скриптом tools/build_standalone.py — правки вносить в tools/cells/.
+Файл сгенерирован из блокнота 5_dsr_ideas.ipynb скриптом tools/build_standalone.py — правки вносить в tools/cells/.
 """
 
 import matplotlib
@@ -392,6 +395,13 @@ class AodvConfig:
     rreq_pack_selective: bool = False      # повторять, только если промолчал кто-то из недавно слышанных соседей
     rreq_pack_neighbor_s: float = 30.0     # «недавно слышанный» сосед — за последние столько секунд
     rreq_pack_max_degree: Optional[int] = None  # повторять, только если у узла не больше стольких соседей (цепочка, мост)
+    # Исследование 5: идеи из DSR
+    multipath_k: int = 1                   # хранить до k путей к получателю (как AOMDV): обрыв — переход на запасной
+    multipath_extra_hops: int = 1          # запасной путь не длиннее основного больше чем на столько переходов
+    overhear_rrep: bool = False            # запоминать маршрут из чужого RREP, услышанного в эфире
+    overhear_data: bool = False            # чужой DATA через соседа продлевает наш маршрут к тому же получателю
+    overhear_max_etx: Optional[float] = None   # подслушивать только у соседа с хорошим каналом (ETX не больше)
+    overhear_no_ireply: bool = False       # по подслушанному маршруту не отвечать на чужие RREQ
     # HELLO
     hello_interval_s: Optional[float] = None   # None — без HELLO, обрыв определяется по отсутствию ACK
     allowed_hello_loss: int = 2
@@ -1189,6 +1199,8 @@ class Route:
     expire: float                  # момент, когда маршрут устареет
     valid: bool = True
     precursors: set = field(default_factory=set)   # соседи, которые шлют через нас данные к этому получателю
+    alts: list = field(default_factory=list)       # запасные пути (next, hops, cost, expire) с тем же seq (исследование 5)
+    heard: bool = False                            # маршрут подслушан в чужом RREP (исследование 5)
 
 
 class AodvState:
@@ -1211,6 +1223,8 @@ class AodvState:
         self.heard_air = deque()           # (начало, длительность) кадров в эфире вокруг узла (занятость канала)
         self.pack = {}                     # (источник, rreq_id) -> ждём пересылку нашего RREQ дальше
         self.rreq_heard = OrderedDict()    # (источник, rreq_id) -> соседи, от которых слышали этот RREQ
+        self.mp_replied = OrderedDict()    # (источник, rreq_id) -> соседи, через которых получатель уже ответил
+        self.rrep_fwd = OrderedDict()      # (получатель, источник, seq) уже пересланных RREP
 
 
 FIVE_YEARS_S = 5 * 365 * 24 * 3600
@@ -1281,7 +1295,7 @@ class AodvSimulator(Simulator):
         self.peak["queue"] = max(self.peak["queue"], len(node.queue))
 
     # Таблица маршрутов
-    def _update_route(self, n, dst, nxt, hops, cost, seq, life):
+    def _update_route(self, n, dst, nxt, hops, cost, seq, life, heard=False):
         """Правило RFC 3561, 6.2: свежее (больший seq) или при равном seq — короче/дешевле."""
         if dst == n:
             return
@@ -1289,10 +1303,17 @@ class AodvSimulator(Simulator):
         rt = st.routes.get(dst)
         now = self.t
         active = rt is not None and rt.valid and rt.expire > now
+        K = self.ac.multipath_k
         if (rt is None or seq > rt.seq
                 or (seq == rt.seq and (not active or self._m(hops, cost) < self._m(rt.hops, rt.cost)))):
             pre = rt.precursors if rt is not None and active and rt.nxt == nxt else set()
-            st.routes[dst] = Route(nxt, hops, cost, seq, now + life, True, pre)
+            alts = []
+            if K > 1 and active and seq == rt.seq:      # прежний основной путь становится запасным
+                alts = [a for a in rt.alts if a[0] != nxt and a[3] > now]
+                if rt.nxt != nxt:
+                    alts.insert(0, (rt.nxt, rt.hops, rt.cost, rt.expire))
+                alts = alts[:K - 1]
+            st.routes[dst] = Route(nxt, hops, cost, seq, now + life, True, pre, alts, heard)
             if len(st.routes) > self.ac.route_table_capacity:   # вытесняем устаревшую запись
                 victim = min(st.routes, key=lambda d: (st.routes[d].valid and st.routes[d].expire > now,
                                                         st.routes[d].expire))
@@ -1301,8 +1322,15 @@ class AodvSimulator(Simulator):
             self.peak["routes"] = max(self.peak["routes"], len(st.routes))
             if dst in st.pending:
                 self._flush(n, dst)
+            return "new"
         elif active and rt.nxt == nxt:
             rt.expire = max(rt.expire, now + life)
+            return "refresh"
+        elif (K > 1 and active and seq == rt.seq and hops <= rt.hops + self.ac.multipath_extra_hops
+              and not any(a[0] == nxt for a in rt.alts)):
+            rt.alts = sorted(rt.alts + [(nxt, hops, cost, now + life)], key=lambda a: self._m(a[1], a[2]))[:K - 1]
+            self.stats["alt_routes_added"] += 1
+            return "alt"
 
     # Источник
     def generate(self, src, dst):
@@ -1569,6 +1597,17 @@ class AodvSimulator(Simulator):
         if k == "HELLO":
             return self._on_hello(r, frame, u)
         if frame.link_dst != r.id:                    # адресный кадр не нам
+            if k == "RREP" and self.ac.overhear_rrep and frame.src != r.id:   # сосед u знает свежий путь к frame.src
+                c, le = frame.ctrl, self._link_etx(r.id, u)
+                if self.ac.overhear_max_etx is not None and le > self.ac.overhear_max_etx:
+                    return                            # слабый канал: такой маршрут быстро порвётся
+                if self._update_route(r.id, frame.src, u, frame.hops + 1, c["cost"] + le,
+                                      c["dst_seq"], c["life"], heard=True) in ("new", "alt"):
+                    self.stats["overheard_routes"] += 1
+            elif k == "DATA" and self.ac.overhear_data and frame.dst != r.id:
+                rt = self._route(r.id, frame.dst)
+                if rt is not None and rt.nxt == u:    # сосед u сейчас реально доставляет к frame.dst
+                    rt.expire = max(rt.expire, self.t + self.ac.active_route_timeout_s)
             return
         self._send_ack(r, frame)
         # Повтор того же кадра (потерялся наш ACK) отбрасываем. Ключ — пакет и номер перехода: после починки
@@ -1601,6 +1640,14 @@ class AodvSimulator(Simulator):
                 st.rreq_heard.popitem(last=False)
         if key in st.rreq_seen:                       # копия уже виденного запроса
             self.stats["rreq_duplicates"] += 1
+            rep_set = st.mp_replied.get(key)
+            if (rep_set is not None and r.id == frame.dst and u not in rep_set
+                    and len(rep_set) < self.ac.multipath_k):  # запасной путь: ответить через другого соседа
+                rep_set.add(u)
+                self._update_route(r.id, orig, u, hops, cost, c["orig_seq"], self._rev_life(hops))
+                self.stats["rrep_dst_extra"] += 1
+                self._send_rrep(r, r.id, orig, 0, 0.0, st.seq, 2 * self.ac.active_route_timeout_s, via=u)
+                return
             col = st.collect.get(key)
             if col is not None and self._m(hops, cost) < self._m(col["hops"], col["cost"]):
                 col.update(u=u, hops=hops, cost=cost)
@@ -1618,10 +1665,15 @@ class AodvSimulator(Simulator):
             return
         self._update_route(r.id, orig, u, hops, cost, c["orig_seq"], self._rev_life(hops))   # обратный маршрут
         if r.id == frame.dst:
+            if self.ac.multipath_k > 1:
+                st.mp_replied[key] = {u}
+                if len(st.mp_replied) > self.ac.rreq_cache_capacity:
+                    st.mp_replied.popitem(last=False)
             self._reply_as_dst(r, orig, c["dst_seq"])
             return
         rt = self._route(r.id, frame.dst)
         if (self.ac.intermediate_reply and rt is not None and rt.nxt != u
+                and not (rt.heard and self.ac.overhear_no_ireply)
                 and (c["dst_seq"] is None or rt.seq >= c["dst_seq"])):
             rt.precursors.add(u)
             self.stats["rrep_intermediate"] += 1
@@ -1675,12 +1727,12 @@ class AodvSimulator(Simulator):
         self.stats["rrep_dst"] += 1
         self._send_rrep(r, r.id, orig, 0, 0.0, self.aodv[r.id].seq, 2 * self.ac.active_route_timeout_s)
 
-    def _send_rrep(self, r, dst, orig, hops, cost, dst_seq, life):
+    def _send_rrep(self, r, dst, orig, hops, cost, dst_seq, life, via=None):
         rev = self._route(r.id, orig)
-        if rev is None:
+        if rev is None and via is None:
             self.stats["rrep_no_reverse"] += 1
             return
-        fr = Frame("RREP", self._cid(), dst, orig, self.net_diam, link_dst=rev.nxt, hops=hops,
+        fr = Frame("RREP", self._cid(), dst, orig, self.net_diam, link_dst=via if via is not None else rev.nxt, hops=hops,
                    size=self.cfg.header_bytes + self.ac.rrep_bytes, ctrl=dict(dst_seq=dst_seq, cost=cost, life=life))
         self._enqueue_now(r, fr, r.epoch)
 
@@ -1692,10 +1744,18 @@ class AodvSimulator(Simulator):
             del st.pack[key]
         if frame.dst == r.id:                          # ответ на наш поиск: пакет из RREQ уже доставлен
             self.aodv[r.id].riding.pop(frame.src, None)
-        self._update_route(r.id, frame.src, u, hops, cost, c["dst_seq"], c["life"])    # прямой маршрут
+        res = self._update_route(r.id, frame.src, u, hops, cost, c["dst_seq"], c["life"])    # прямой маршрут
         if frame.dst == r.id:
             self.stats["rrep_received"] += 1
             return
+        if self.ac.multipath_k > 1:                    # повторный RREP без нового пути дальше не шлём
+            k2 = (frame.src, frame.dst, c["dst_seq"])
+            if k2 in st.rrep_fwd and res not in ("new", "alt"):
+                self.stats["rrep_dup_dropped"] += 1
+                return
+            st.rrep_fwd[k2] = True
+            if len(st.rrep_fwd) > self.ac.rreq_cache_capacity:
+                st.rrep_fwd.popitem(last=False)
         rev = self._route(r.id, frame.dst)
         if rev is None:
             self.stats["rrep_no_reverse"] += 1
@@ -1766,13 +1826,26 @@ class AodvSimulator(Simulator):
         st = self.aodv[n]
         unreach = []
         for dst, rt in st.routes.items():
+            if rt.alts:
+                rt.alts = [a for a in rt.alts if a[0] != v and a[3] > self.t]
             if rt.valid and rt.nxt == v:
+                if self._use_alt(rt):
+                    continue
                 rt.valid, rt.seq, rt.expire = False, rt.seq + 1, self.t
                 if rt.precursors:
                     unreach.append((dst, rt.seq))
         st.last_heard.pop(v, None)
         if unreach:
             self._send_rerr(n, unreach)
+
+    def _use_alt(self, rt):
+        """Основной путь оборвался — перейти на запасной (исследование 5)."""
+        if not rt.alts:
+            return False
+        nxt, hops, cost, expire = rt.alts.pop(0)
+        rt.nxt, rt.hops, rt.cost, rt.expire = nxt, hops, cost, max(expire, self.t + 1.0)
+        self.stats["alt_switches"] += 1
+        return True
 
     def _send_rerr(self, n, unreach):
         nd = self.nodes[n]
@@ -1785,7 +1858,11 @@ class AodvSimulator(Simulator):
         prop = []
         for dst, seq in frame.ctrl["unreach"]:
             rt = st.routes.get(dst)
+            if rt is not None and rt.alts:
+                rt.alts = [a for a in rt.alts if a[0] != u and a[3] > self.t]
             if rt is not None and rt.valid and rt.nxt == u:
+                if self._use_alt(rt):
+                    continue
                 rt.valid, rt.seq, rt.expire = False, max(rt.seq, seq), self.t
                 if rt.precursors:
                     prop.append((dst, rt.seq))
@@ -1839,7 +1916,8 @@ class AodvSimulator(Simulator):
         for k in ("discoveries", "discovery_failed", "rrep_intermediate", "rreq_suppressed",
                   "link_breaks", "local_repairs", "rerr_sent", "hello_link_breaks",
                   "piggybacked", "parked", "carry_wakeups", "carry_retries", "delivered_in_rreq",
-                  "rreq_suppressed_load", "rreq_suppressed_dc", "rreq_pack_resends", "rreq_pack_skipped"):
+                  "rreq_suppressed_load", "rreq_suppressed_dc", "rreq_pack_resends", "rreq_pack_skipped",
+                  "alt_routes_added", "alt_switches", "rrep_dst_extra", "rrep_dup_dropped", "overheard_routes"):
             out[k] = self.stats[k]
         out["discovery_time_mean_s"] = (sum(self.discovery_times) / len(self.discovery_times)
                                         if self.discovery_times else float("nan"))
@@ -1994,6 +2072,13 @@ AODV_PRESETS["hybrid_plus"] = replace(AODV_PRESETS["hybrid_dc"],
 METHOD_COLORS.update({"hybrid_plus": "#5f3dc4"})
 
 
+# ⚙️ Исследование 5: идеи из DSR
+AODV_PRESETS["hybrid_ovh"] = replace(AODV_PRESETS["hybrid_plus"],
+                                     overhear_rrep=True,          # запоминать свежий маршрут из чужого RREP
+                                     overhear_no_ireply=True)     # но не отвечать по нему на чужие RREQ
+METHOD_COLORS.update({"hybrid_ovh": "#c2255c", "dsr": "#868e96"})
+
+
 # EXP: общие функции экспериментов
 import os
 from dataclasses import replace as dc_replace
@@ -2121,7 +2206,7 @@ def main():
         sys.stdout.reconfigure(encoding="utf-8")
     p = argparse.ArgumentParser(description="hybrid_plus и контрольные методы на сценариях исследования")
     p.add_argument("--methods", default="hybrid_plus",
-                   help="через запятую: hybrid_plus, hybrid_dc, hybrid, aodv_lora, aodv_rfc, flooding, flooding_x3, dijkstra")
+                   help="через запятую: hybrid_ovh, hybrid_plus, hybrid_dc, hybrid, aodv_lora, aodv_rfc, flooding, flooding_x3, dijkstra")
     p.add_argument("--topo", default="rwp20_vehicle", help="rwp20_walk | rwp20_vehicle | rwp20_drone | line10 | grid4x4 | …")
     p.add_argument("--pattern", default="random", help="random (случайные пары) | sink (все → узел 0) | default (поток топологии)")
     p.add_argument("--rate", type=float, default=0.2, help="суммарный трафик, пакетов/с на всю сеть")
@@ -2129,10 +2214,11 @@ def main():
     p.add_argument("--seeds", default="1-10", help="например 1-10 или 1,2,5")
     p.add_argument("--n", type=int, default=None, help="число узлов (для rwp20_*)")
     p.add_argument("--area", type=float, default=None, help="сторона квадрата, м (для rwp20_*)")
-    p.add_argument("--config", action="store_true", help="показать параметры hybrid_plus и выйти")
+    p.add_argument("--config", action="store_true", help="показать параметры hybrid_plus и hybrid_ovh и выйти")
     a = p.parse_args()
     if a.config:
         _show_config("hybrid_plus")
+        _show_config("hybrid_ovh")
         return
     rows = []
     for m in a.methods.split(","):
