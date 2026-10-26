@@ -1,11 +1,11 @@
-"""Собирает mesh_routing_hybrid.ipynb: общая часть (разделы 0–9 и AODV) из mesh_routing_aodv.ipynb
+"""Собирает 2_hybrid_aodv.ipynb: общая часть (разделы 0–9 и AODV) из 1_simple_aodv.ipynb
 + гибрид и его эксперименты из tools/cells/hyb_*. Сначала нужно собрать AODV: python tools/build_aodv.py"""
 import json, pathlib
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 CELLS = pathlib.Path(__file__).resolve().parent / "cells"
-SRC = ROOT / "mesh_routing_aodv.ipynb"
-DST = ROOT / "mesh_routing_hybrid.ipynb"
+SRC = ROOT / "1_simple_aodv.ipynb"
+DST = ROOT / "2_hybrid_aodv.ipynb"
 HELPERS = "# EXP: общие функции"
 
 
@@ -35,7 +35,7 @@ for i, c in enumerate(src):
         continue
     out.append(c)
     if c["cell_type"] == "code" and s.startswith(HELPERS):
-        out.append(code('RESULTS_DIR = os.path.join("results", "hybrid")   # результаты гибрида отдельно от AODV'))
+        out.append(code('RESULTS_DIR = os.path.join("results", "2_hybrid_aodv")   # результаты исследования 2 отдельно от исследования 1'))
         break
 out += [cell(p.name) for p in sorted(CELLS.glob("hyb_x*"))]
 

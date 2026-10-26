@@ -26,7 +26,7 @@ class AodvConfig:
     retry_backoff_s: Optional[float] = None    # пауза перед повтором растёт: b, 2b, 4b… (None — как у всех методов)
     extra_retries_if_heard: int = 0        # доп. повторы, если соседа недавно слышали: скорее коллизия, чем уход
     heard_window_s: float = 3.0
-    # Гибрид (см. mesh_routing_hybrid.ipynb): «храни и неси» и первый пакет внутри RREQ
+    # Гибрид (см. 2_hybrid_aodv.ipynb): «храни и неси» и первый пакет внутри RREQ
     carry: bool = False                    # поиск не нашёл путь — пакеты не теряются, а ждут у узла до срока
     carry_new_neighbor_s: float = 10.0     # услышали соседа, которого не было столько секунд, — ищем путь заново
     carry_min_gap_s: float = 2.0           # не чаще одного поиска к одному получателю за это время

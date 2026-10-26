@@ -2,8 +2,8 @@
 import os
 from dataclasses import replace as dc_replace
 
-RESULTS_DIR = "results"
-RERUN = False          # True — пересчитать все эксперименты заново (≈ 40 мин на одном ядре); False — взять results/*.csv
+RESULTS_DIR = os.path.join("results", "1_simple_aodv")
+RERUN = False          # True — пересчитать все эксперименты заново (≈ 40 мин на одном ядре); False — взять готовые CSV из RESULTS_DIR
 MAIN_METHODS = ("flooding", "dijkstra", "aodv_rfc", "aodv_lora")
 MOBILITY = {"rwp20_walk": "пешеходы", "rwp20_vehicle": "техника", "rwp20_drone": "дроны"}
 
@@ -33,7 +33,7 @@ def run_spec(spec):
 
 
 def run_grid(name, specs):
-    """Прогоняет список спецификаций или берёт сохранённый результат results/<name>.csv."""
+    """Прогоняет список спецификаций или берёт сохранённый результат RESULTS_DIR/<name>.csv."""
     path = os.path.join(RESULTS_DIR, name + ".csv")
     if not RERUN and os.path.exists(path):
         return pd.read_csv(path)

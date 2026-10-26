@@ -1,11 +1,11 @@
-"""Собирает mesh_routing_aodv.ipynb из исходного блокнота + новых ячеек."""
+"""Собирает 1_simple_aodv.ipynb из исходного блокнота + новых ячеек."""
 import json, sys, copy, pathlib
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 HERE = pathlib.Path(__file__).parent
 CELLS = HERE / "cells"
 SRC = ROOT / "theory" / "mesh_routing_simulation.ipynb"
-DST = ROOT / "mesh_routing_aodv.ipynb"
+DST = ROOT / "1_simple_aodv.ipynb"
 
 nb = json.loads(SRC.read_text(encoding="utf-8"))
 cells = nb["cells"]

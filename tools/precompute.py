@@ -1,10 +1,10 @@
 """Выполняет все код-ячейки блокнота, а run_grid подменяет на параллельный (16 процессов).
-Результаты кладутся в results/*.csv — те же, что получил бы блокнот при RERUN = True."""
+Результаты кладутся в папку RESULTS_DIR блокнота (results/…) — те же, что получил бы блокнот при RERUN = True."""
 import json, sys, os, time
 from concurrent.futures import ProcessPoolExecutor
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-NB = os.path.join(ROOT, sys.argv[1] if len(sys.argv) > 1 and not sys.argv[1].startswith("--") else "mesh_routing_aodv.ipynb")
+NB = os.path.join(ROOT, sys.argv[1] if len(sys.argv) > 1 and not sys.argv[1].startswith("--") else "1_simple_aodv.ipynb")
 FORCE = "--force" in sys.argv
 HELPERS = "# EXP: общие функции"
 

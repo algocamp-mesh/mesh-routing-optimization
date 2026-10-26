@@ -3,7 +3,7 @@ from nbclient import NotebookClient
 sys.stdout.reconfigure(encoding="utf-8")
 import os
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-p = os.path.join(ROOT, sys.argv[1] if len(sys.argv) > 1 else "mesh_routing_aodv.ipynb")
+p = os.path.join(ROOT, sys.argv[1] if len(sys.argv) > 1 else "1_simple_aodv.ipynb")
 nb = nbformat.read(p, as_version=4)
 t0 = time.time()
 NotebookClient(nb, timeout=1800, kernel_name="python3", resources={"metadata": {"path": ROOT}}).execute()

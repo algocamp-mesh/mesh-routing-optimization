@@ -31,10 +31,10 @@
 
 | Путь | Что |
 |---|---|
-| `mesh_routing_aodv.ipynb` | Исследование AODV: реализация, диагностика, доработки, требования, нагрузка, ресурсы |
-| `mesh_routing_hybrid.ipynb` | Гибрид: механизмы, сравнение с эталоном и с затоплением с повторами, вклад механизмов, нагрузка, плотность |
+| `1_simple_aodv.ipynb` | Исследование 1, AODV: реализация, диагностика, доработки, требования, нагрузка, ресурсы |
+| `2_hybrid_aodv.ipynb` | Исследование 2, гибрид: механизмы, сравнение с эталоном и с затоплением с повторами, вклад механизмов, нагрузка, плотность |
 | `AODV-итоги.md` | Краткая сводка по AODV |
-| `results/`, `results/hybrid/` | Результаты экспериментов (CSV), блокноты читают их отсюда |
+| `results/1_simple_aodv/`, `results/2_hybrid_aodv/` | Результаты экспериментов (CSV), каждый блокнот читает свою папку |
 | `theory/` | Исходный симулятор `mesh_routing_simulation.ipynb`, требования `fix`, статьи |
 | `tools/` | Сборка блокнотов из исходников `tools/cells/` и пересчёт экспериментов |
 
@@ -47,8 +47,8 @@
 Блокноты собираются из `tools/cells/`. Чтобы изменить код или текст, правьте ячейки там и пересобирайте:
 
 ```
-python tools/build_aodv.py                            # mesh_routing_aodv.ipynb из theory/ + tools/cells
-python tools/build_hybrid.py                          # mesh_routing_hybrid.ipynb из mesh_routing_aodv.ipynb + tools/cells/hyb_*
-python tools/precompute.py mesh_routing_hybrid.ipynb  # недостающие results/*.csv параллельно на всех ядрах (--force — пересчитать все)
-python tools/execnb.py mesh_routing_hybrid.ipynb      # выполнить блокнот и сохранить графики
+python tools/build_aodv.py                       # 1_simple_aodv.ipynb из theory/ + tools/cells
+python tools/build_hybrid.py                     # 2_hybrid_aodv.ipynb из 1_simple_aodv.ipynb + tools/cells/hyb_*
+python tools/precompute.py 2_hybrid_aodv.ipynb  # недостающие CSV в results/ параллельно на всех ядрах (--force — пересчитать все)
+python tools/execnb.py 2_hybrid_aodv.ipynb      # выполнить блокнот и сохранить графики
 ```
