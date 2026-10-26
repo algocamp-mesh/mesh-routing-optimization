@@ -67,6 +67,7 @@
 | `2_hybrid_aodv.ipynb` | Исследование 2, гибрид: пакет в RREQ и «храни и неси», сравнение с эталоном и затоплением с повторами |
 | `3_adaptive_hybrid.ipynb` | Исследование 3, гибрид под нагрузкой: диагностика, отвергнутые идеи, бюджет эфира (`hybrid_dc`) |
 | `4_reliable_rreq.ipynb` | Исследование 4, надёжный RREQ на цепочках (`hybrid_plus`) и сводка всех исследований |
+| `hybrid_plus.py` | Итоговый вариант одним файлом: симулятор + `hybrid_plus` и контрольные методы. `python hybrid_plus.py --help`, параметры — `--config` |
 | `AODV-итоги.md` | Краткая сводка по исследованию 1 |
 | `results/<исследование>/` | Результаты экспериментов (CSV), каждый блокнот читает свою папку |
 | `results/compare_dsr/`, `tools/compare_dsr.py` | DSR коллеги на наших сценариях |
@@ -86,4 +87,5 @@ python tools/build_aodv.py                          # 1_simple_aodv.ipynb из t
 python tools/build_studies.py                       # 2–4 из 1_simple_aodv.ipynb + tools/cells (можно указать имя)
 python tools/precompute.py 4_reliable_rreq.ipynb   # недостающие CSV в results/ параллельно на всех ядрах (--force — пересчитать все)
 python tools/execnb.py 4_reliable_rreq.ipynb       # выполнить блокнот и сохранить графики
+python tools/build_standalone.py                   # hybrid_plus.py из 4_reliable_rreq.ipynb
 ```
