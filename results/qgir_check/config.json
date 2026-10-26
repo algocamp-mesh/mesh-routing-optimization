@@ -1,7 +1,7 @@
 {
   "python": "3.12.10",
   "pandas": "3.0.0",
-  "elapsed_s": 31.39853010000661,
+  "elapsed_s": 24.750552400015295,
   "runs": [
     {
       "run_id": "s00_qgir_1",
@@ -2405,5 +2405,5 @@
     }
   ],
   "assumptions": "Python model; RAM budget is an estimate; no compiled firmware or Flash endurance test",
-  "notebook_source_sha256": "8587b890caca7e5f95ada7e02bc2854e4f6dbbd27cdf37800afb42d5e42b7d60"
+  "notebook_source_sha256": "cbf46fb627ac7d78071cd5bf056e487daed2245dd4d27d3d64502dcb92658254"
 }

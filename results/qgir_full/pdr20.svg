@@ -1,0 +1,292 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="2513" viewBox="0 0 1000 2513">
+<rect width="100%" height="100%" fill="white"/>
+<text x="20" y="25" font-family="sans-serif" font-size="18">PDR within 20 seconds (mean across seeds)</text>
+<text x="20" y="66" font-family="sans-serif" font-size="12">mesh100_0.02_cold / qgir</text>
+<rect x="425" y="52" width="350.53" height="20" fill="#2274a5"/>
+<line x1="866.0" x2="866.0" y1="50" y2="74" stroke="#c33" stroke-width="2"/>
+<text x="900" y="66" font-family="sans-serif" font-size="12">0.779</text>
+<text x="20" y="100" font-family="sans-serif" font-size="12">mesh100_0.02_cold / local_etx</text>
+<rect x="425" y="86" width="369.79" height="20" fill="#2274a5"/>
+<line x1="866.0" x2="866.0" y1="84" y2="108" stroke="#c33" stroke-width="2"/>
+<text x="900" y="100" font-family="sans-serif" font-size="12">0.822</text>
+<text x="20" y="134" font-family="sans-serif" font-size="12">mesh100_0.02_cold / dp_hoplimit</text>
+<rect x="425" y="120" width="450.00" height="20" fill="#2274a5"/>
+<line x1="866.0" x2="866.0" y1="118" y2="142" stroke="#c33" stroke-width="2"/>
+<text x="900" y="134" font-family="sans-serif" font-size="12">1.000</text>
+<text x="20" y="168" font-family="sans-serif" font-size="12">mesh100_0.02_cold / flooding</text>
+<rect x="425" y="154" width="438.21" height="20" fill="#2274a5"/>
+<line x1="866.0" x2="866.0" y1="152" y2="176" stroke="#c33" stroke-width="2"/>
+<text x="900" y="168" font-family="sans-serif" font-size="12">0.974</text>
+<text x="20" y="202" font-family="sans-serif" font-size="12">mesh100_0.02_warm / qgir</text>
+<rect x="425" y="188" width="399.16" height="20" fill="#2274a5"/>
+<line x1="866.0" x2="866.0" y1="186" y2="210" stroke="#c33" stroke-width="2"/>
+<text x="900" y="202" font-family="sans-serif" font-size="12">0.887</text>
+<text x="20" y="236" font-family="sans-serif" font-size="12">mesh100_0.02_warm / local_etx</text>
+<rect x="425" y="222" width="421.11" height="20" fill="#2274a5"/>
+<line x1="866.0" x2="866.0" y1="220" y2="244" stroke="#c33" stroke-width="2"/>
+<text x="900" y="236" font-family="sans-serif" font-size="12">0.936</text>
+<text x="20" y="270" font-family="sans-serif" font-size="12">mesh100_0.02_warm / dp_hoplimit</text>
+<rect x="425" y="256" width="450.00" height="20" fill="#2274a5"/>
+<line x1="866.0" x2="866.0" y1="254" y2="278" stroke="#c33" stroke-width="2"/>
+<text x="900" y="270" font-family="sans-serif" font-size="12">1.000</text>
+<text x="20" y="304" font-family="sans-serif" font-size="12">mesh100_0.02_warm / flooding</text>
+<rect x="425" y="290" width="436.42" height="20" fill="#2274a5"/>
+<line x1="866.0" x2="866.0" y1="288" y2="312" stroke="#c33" stroke-width="2"/>
+<text x="900" y="304" font-family="sans-serif" font-size="12">0.970</text>
+<text x="20" y="338" font-family="sans-serif" font-size="12">mesh100_0.02_warm_churn / qgir</text>
+<rect x="425" y="324" width="391.07" height="20" fill="#2274a5"/>
+<line x1="866.0" x2="866.0" y1="322" y2="346" stroke="#c33" stroke-width="2"/>
+<text x="900" y="338" font-family="sans-serif" font-size="12">0.869</text>
+<text x="20" y="372" font-family="sans-serif" font-size="12">mesh100_0.02_warm_churn / local_etx</text>
+<rect x="425" y="358" width="396.36" height="20" fill="#2274a5"/>
+<line x1="866.0" x2="866.0" y1="356" y2="380" stroke="#c33" stroke-width="2"/>
+<text x="900" y="372" font-family="sans-serif" font-size="12">0.881</text>
+<text x="20" y="406" font-family="sans-serif" font-size="12">mesh100_0.02_warm_churn / dp_hoplimit</text>
+<rect x="425" y="392" width="450.00" height="20" fill="#2274a5"/>
+<line x1="866.0" x2="866.0" y1="390" y2="414" stroke="#c33" stroke-width="2"/>
+<text x="900" y="406" font-family="sans-serif" font-size="12">1.000</text>
+<text x="20" y="440" font-family="sans-serif" font-size="12">mesh100_0.02_warm_churn / flooding</text>
+<rect x="425" y="426" width="435.17" height="20" fill="#2274a5"/>
+<line x1="866.0" x2="866.0" y1="424" y2="448" stroke="#c33" stroke-width="2"/>
+<text x="900" y="440" font-family="sans-serif" font-size="12">0.967</text>
+<text x="20" y="474" font-family="sans-serif" font-size="12">mesh100_0.1_cold / qgir</text>
+<rect x="425" y="460" width="300.20" height="20" fill="#2274a5"/>
+<line x1="866.0" x2="866.0" y1="458" y2="482" stroke="#c33" stroke-width="2"/>
+<text x="900" y="474" font-family="sans-serif" font-size="12">0.667</text>
+<text x="20" y="508" font-family="sans-serif" font-size="12">mesh100_0.1_cold / local_etx</text>
+<rect x="425" y="494" width="335.40" height="20" fill="#2274a5"/>
+<line x1="866.0" x2="866.0" y1="492" y2="516" stroke="#c33" stroke-width="2"/>
+<text x="900" y="508" font-family="sans-serif" font-size="12">0.745</text>
+<text x="20" y="542" font-family="sans-serif" font-size="12">mesh100_0.1_cold / dp_hoplimit</text>
+<rect x="425" y="528" width="444.76" height="20" fill="#2274a5"/>
+<line x1="866.0" x2="866.0" y1="526" y2="550" stroke="#c33" stroke-width="2"/>
+<text x="900" y="542" font-family="sans-serif" font-size="12">0.988</text>
+<text x="20" y="576" font-family="sans-serif" font-size="12">mesh100_0.1_cold / flooding</text>
+<rect x="425" y="562" width="428.31" height="20" fill="#2274a5"/>
+<line x1="866.0" x2="866.0" y1="560" y2="584" stroke="#c33" stroke-width="2"/>
+<text x="900" y="576" font-family="sans-serif" font-size="12">0.952</text>
+<text x="20" y="610" font-family="sans-serif" font-size="12">mesh100_0.1_warm / qgir</text>
+<rect x="425" y="596" width="323.36" height="20" fill="#2274a5"/>
+<line x1="866.0" x2="866.0" y1="594" y2="618" stroke="#c33" stroke-width="2"/>
+<text x="900" y="610" font-family="sans-serif" font-size="12">0.719</text>
+<text x="20" y="644" font-family="sans-serif" font-size="12">mesh100_0.1_warm / local_etx</text>
+<rect x="425" y="630" width="358.87" height="20" fill="#2274a5"/>
+<line x1="866.0" x2="866.0" y1="628" y2="652" stroke="#c33" stroke-width="2"/>
+<text x="900" y="644" font-family="sans-serif" font-size="12">0.797</text>
+<text x="20" y="678" font-family="sans-serif" font-size="12">mesh100_0.1_warm / dp_hoplimit</text>
+<rect x="425" y="664" width="444.10" height="20" fill="#2274a5"/>
+<line x1="866.0" x2="866.0" y1="662" y2="686" stroke="#c33" stroke-width="2"/>
+<text x="900" y="678" font-family="sans-serif" font-size="12">0.987</text>
+<text x="20" y="712" font-family="sans-serif" font-size="12">mesh100_0.1_warm / flooding</text>
+<rect x="425" y="698" width="426.12" height="20" fill="#2274a5"/>
+<line x1="866.0" x2="866.0" y1="696" y2="720" stroke="#c33" stroke-width="2"/>
+<text x="900" y="712" font-family="sans-serif" font-size="12">0.947</text>
+<text x="20" y="746" font-family="sans-serif" font-size="12">mesh100_0.1_warm_churn / qgir</text>
+<rect x="425" y="732" width="312.68" height="20" fill="#2274a5"/>
+<line x1="866.0" x2="866.0" y1="730" y2="754" stroke="#c33" stroke-width="2"/>
+<text x="900" y="746" font-family="sans-serif" font-size="12">0.695</text>
+<text x="20" y="780" font-family="sans-serif" font-size="12">mesh100_0.1_warm_churn / local_etx</text>
+<rect x="425" y="766" width="345.45" height="20" fill="#2274a5"/>
+<line x1="866.0" x2="866.0" y1="764" y2="788" stroke="#c33" stroke-width="2"/>
+<text x="900" y="780" font-family="sans-serif" font-size="12">0.768</text>
+<text x="20" y="814" font-family="sans-serif" font-size="12">mesh100_0.1_warm_churn / dp_hoplimit</text>
+<rect x="425" y="800" width="444.73" height="20" fill="#2274a5"/>
+<line x1="866.0" x2="866.0" y1="798" y2="822" stroke="#c33" stroke-width="2"/>
+<text x="900" y="814" font-family="sans-serif" font-size="12">0.988</text>
+<text x="20" y="848" font-family="sans-serif" font-size="12">mesh100_0.1_warm_churn / flooding</text>
+<rect x="425" y="834" width="425.40" height="20" fill="#2274a5"/>
+<line x1="866.0" x2="866.0" y1="832" y2="856" stroke="#c33" stroke-width="2"/>
+<text x="900" y="848" font-family="sans-serif" font-size="12">0.945</text>
+<text x="20" y="882" font-family="sans-serif" font-size="12">mesh100_0.3_cold / qgir</text>
+<rect x="425" y="868" width="229.74" height="20" fill="#2274a5"/>
+<line x1="866.0" x2="866.0" y1="866" y2="890" stroke="#c33" stroke-width="2"/>
+<text x="900" y="882" font-family="sans-serif" font-size="12">0.511</text>
+<text x="20" y="916" font-family="sans-serif" font-size="12">mesh100_0.3_cold / local_etx</text>
+<rect x="425" y="902" width="323.61" height="20" fill="#2274a5"/>
+<line x1="866.0" x2="866.0" y1="900" y2="924" stroke="#c33" stroke-width="2"/>
+<text x="900" y="916" font-family="sans-serif" font-size="12">0.719</text>
+<text x="20" y="950" font-family="sans-serif" font-size="12">mesh100_0.3_cold / dp_hoplimit</text>
+<rect x="425" y="936" width="435.17" height="20" fill="#2274a5"/>
+<line x1="866.0" x2="866.0" y1="934" y2="958" stroke="#c33" stroke-width="2"/>
+<text x="900" y="950" font-family="sans-serif" font-size="12">0.967</text>
+<text x="20" y="984" font-family="sans-serif" font-size="12">mesh100_0.3_cold / flooding</text>
+<rect x="425" y="970" width="404.52" height="20" fill="#2274a5"/>
+<line x1="866.0" x2="866.0" y1="968" y2="992" stroke="#c33" stroke-width="2"/>
+<text x="900" y="984" font-family="sans-serif" font-size="12">0.899</text>
+<text x="20" y="1018" font-family="sans-serif" font-size="12">mesh100_0.3_warm / qgir</text>
+<rect x="425" y="1004" width="255.58" height="20" fill="#2274a5"/>
+<line x1="866.0" x2="866.0" y1="1002" y2="1026" stroke="#c33" stroke-width="2"/>
+<text x="900" y="1018" font-family="sans-serif" font-size="12">0.568</text>
+<text x="20" y="1052" font-family="sans-serif" font-size="12">mesh100_0.3_warm / local_etx</text>
+<rect x="425" y="1038" width="342.56" height="20" fill="#2274a5"/>
+<line x1="866.0" x2="866.0" y1="1036" y2="1060" stroke="#c33" stroke-width="2"/>
+<text x="900" y="1052" font-family="sans-serif" font-size="12">0.761</text>
+<text x="20" y="1086" font-family="sans-serif" font-size="12">mesh100_0.3_warm / dp_hoplimit</text>
+<rect x="425" y="1072" width="435.39" height="20" fill="#2274a5"/>
+<line x1="866.0" x2="866.0" y1="1070" y2="1094" stroke="#c33" stroke-width="2"/>
+<text x="900" y="1086" font-family="sans-serif" font-size="12">0.968</text>
+<text x="20" y="1120" font-family="sans-serif" font-size="12">mesh100_0.3_warm / flooding</text>
+<rect x="425" y="1106" width="405.58" height="20" fill="#2274a5"/>
+<line x1="866.0" x2="866.0" y1="1104" y2="1128" stroke="#c33" stroke-width="2"/>
+<text x="900" y="1120" font-family="sans-serif" font-size="12">0.901</text>
+<text x="20" y="1154" font-family="sans-serif" font-size="12">mesh100_0.3_warm_churn / qgir</text>
+<rect x="425" y="1140" width="242.61" height="20" fill="#2274a5"/>
+<line x1="866.0" x2="866.0" y1="1138" y2="1162" stroke="#c33" stroke-width="2"/>
+<text x="900" y="1154" font-family="sans-serif" font-size="12">0.539</text>
+<text x="20" y="1188" font-family="sans-serif" font-size="12">mesh100_0.3_warm_churn / local_etx</text>
+<rect x="425" y="1174" width="334.24" height="20" fill="#2274a5"/>
+<line x1="866.0" x2="866.0" y1="1172" y2="1196" stroke="#c33" stroke-width="2"/>
+<text x="900" y="1188" font-family="sans-serif" font-size="12">0.743</text>
+<text x="20" y="1222" font-family="sans-serif" font-size="12">mesh100_0.3_warm_churn / dp_hoplimit</text>
+<rect x="425" y="1208" width="433.13" height="20" fill="#2274a5"/>
+<line x1="866.0" x2="866.0" y1="1206" y2="1230" stroke="#c33" stroke-width="2"/>
+<text x="900" y="1222" font-family="sans-serif" font-size="12">0.963</text>
+<text x="20" y="1256" font-family="sans-serif" font-size="12">mesh100_0.3_warm_churn / flooding</text>
+<rect x="425" y="1242" width="398.90" height="20" fill="#2274a5"/>
+<line x1="866.0" x2="866.0" y1="1240" y2="1264" stroke="#c33" stroke-width="2"/>
+<text x="900" y="1256" font-family="sans-serif" font-size="12">0.886</text>
+<text x="20" y="1290" font-family="sans-serif" font-size="12">mobile20_0.02_cold / qgir</text>
+<rect x="425" y="1276" width="273.53" height="20" fill="#2274a5"/>
+<line x1="830.0" x2="830.0" y1="1274" y2="1298" stroke="#c33" stroke-width="2"/>
+<text x="900" y="1290" font-family="sans-serif" font-size="12">0.608</text>
+<text x="20" y="1324" font-family="sans-serif" font-size="12">mobile20_0.02_cold / local_etx</text>
+<rect x="425" y="1310" width="269.03" height="20" fill="#2274a5"/>
+<line x1="830.0" x2="830.0" y1="1308" y2="1332" stroke="#c33" stroke-width="2"/>
+<text x="900" y="1324" font-family="sans-serif" font-size="12">0.598</text>
+<text x="20" y="1358" font-family="sans-serif" font-size="12">mobile20_0.02_cold / dp_hoplimit</text>
+<rect x="425" y="1344" width="436.03" height="20" fill="#2274a5"/>
+<line x1="830.0" x2="830.0" y1="1342" y2="1366" stroke="#c33" stroke-width="2"/>
+<text x="900" y="1358" font-family="sans-serif" font-size="12">0.969</text>
+<text x="20" y="1392" font-family="sans-serif" font-size="12">mobile20_0.02_cold / flooding</text>
+<rect x="425" y="1378" width="427.38" height="20" fill="#2274a5"/>
+<line x1="830.0" x2="830.0" y1="1376" y2="1400" stroke="#c33" stroke-width="2"/>
+<text x="900" y="1392" font-family="sans-serif" font-size="12">0.950</text>
+<text x="20" y="1426" font-family="sans-serif" font-size="12">mobile20_0.02_warm / qgir</text>
+<rect x="425" y="1412" width="287.04" height="20" fill="#2274a5"/>
+<line x1="830.0" x2="830.0" y1="1410" y2="1434" stroke="#c33" stroke-width="2"/>
+<text x="900" y="1426" font-family="sans-serif" font-size="12">0.638</text>
+<text x="20" y="1460" font-family="sans-serif" font-size="12">mobile20_0.02_warm / local_etx</text>
+<rect x="425" y="1446" width="298.17" height="20" fill="#2274a5"/>
+<line x1="830.0" x2="830.0" y1="1444" y2="1468" stroke="#c33" stroke-width="2"/>
+<text x="900" y="1460" font-family="sans-serif" font-size="12">0.663</text>
+<text x="20" y="1494" font-family="sans-serif" font-size="12">mobile20_0.02_warm / dp_hoplimit</text>
+<rect x="425" y="1480" width="444.14" height="20" fill="#2274a5"/>
+<line x1="830.0" x2="830.0" y1="1478" y2="1502" stroke="#c33" stroke-width="2"/>
+<text x="900" y="1494" font-family="sans-serif" font-size="12">0.987</text>
+<text x="20" y="1528" font-family="sans-serif" font-size="12">mobile20_0.02_warm / flooding</text>
+<rect x="425" y="1514" width="426.54" height="20" fill="#2274a5"/>
+<line x1="830.0" x2="830.0" y1="1512" y2="1536" stroke="#c33" stroke-width="2"/>
+<text x="900" y="1528" font-family="sans-serif" font-size="12">0.948</text>
+<text x="20" y="1562" font-family="sans-serif" font-size="12">mobile20_0.02_warm_churn / qgir</text>
+<rect x="425" y="1548" width="287.03" height="20" fill="#2274a5"/>
+<line x1="830.0" x2="830.0" y1="1546" y2="1570" stroke="#c33" stroke-width="2"/>
+<text x="900" y="1562" font-family="sans-serif" font-size="12">0.638</text>
+<text x="20" y="1596" font-family="sans-serif" font-size="12">mobile20_0.02_warm_churn / local_etx</text>
+<rect x="425" y="1582" width="292.44" height="20" fill="#2274a5"/>
+<line x1="830.0" x2="830.0" y1="1580" y2="1604" stroke="#c33" stroke-width="2"/>
+<text x="900" y="1596" font-family="sans-serif" font-size="12">0.650</text>
+<text x="20" y="1630" font-family="sans-serif" font-size="12">mobile20_0.02_warm_churn / dp_hoplimit</text>
+<rect x="425" y="1616" width="435.06" height="20" fill="#2274a5"/>
+<line x1="830.0" x2="830.0" y1="1614" y2="1638" stroke="#c33" stroke-width="2"/>
+<text x="900" y="1630" font-family="sans-serif" font-size="12">0.967</text>
+<text x="20" y="1664" font-family="sans-serif" font-size="12">mobile20_0.02_warm_churn / flooding</text>
+<rect x="425" y="1650" width="420.96" height="20" fill="#2274a5"/>
+<line x1="830.0" x2="830.0" y1="1648" y2="1672" stroke="#c33" stroke-width="2"/>
+<text x="900" y="1664" font-family="sans-serif" font-size="12">0.935</text>
+<text x="20" y="1698" font-family="sans-serif" font-size="12">mobile20_0.1_cold / qgir</text>
+<rect x="425" y="1684" width="248.15" height="20" fill="#2274a5"/>
+<line x1="830.0" x2="830.0" y1="1682" y2="1706" stroke="#c33" stroke-width="2"/>
+<text x="900" y="1698" font-family="sans-serif" font-size="12">0.551</text>
+<text x="20" y="1732" font-family="sans-serif" font-size="12">mobile20_0.1_cold / local_etx</text>
+<rect x="425" y="1718" width="271.27" height="20" fill="#2274a5"/>
+<line x1="830.0" x2="830.0" y1="1716" y2="1740" stroke="#c33" stroke-width="2"/>
+<text x="900" y="1732" font-family="sans-serif" font-size="12">0.603</text>
+<text x="20" y="1766" font-family="sans-serif" font-size="12">mobile20_0.1_cold / dp_hoplimit</text>
+<rect x="425" y="1752" width="435.98" height="20" fill="#2274a5"/>
+<line x1="830.0" x2="830.0" y1="1750" y2="1774" stroke="#c33" stroke-width="2"/>
+<text x="900" y="1766" font-family="sans-serif" font-size="12">0.969</text>
+<text x="20" y="1800" font-family="sans-serif" font-size="12">mobile20_0.1_cold / flooding</text>
+<rect x="425" y="1786" width="418.77" height="20" fill="#2274a5"/>
+<line x1="830.0" x2="830.0" y1="1784" y2="1808" stroke="#c33" stroke-width="2"/>
+<text x="900" y="1800" font-family="sans-serif" font-size="12">0.931</text>
+<text x="20" y="1834" font-family="sans-serif" font-size="12">mobile20_0.1_warm / qgir</text>
+<rect x="425" y="1820" width="256.52" height="20" fill="#2274a5"/>
+<line x1="830.0" x2="830.0" y1="1818" y2="1842" stroke="#c33" stroke-width="2"/>
+<text x="900" y="1834" font-family="sans-serif" font-size="12">0.570</text>
+<text x="20" y="1868" font-family="sans-serif" font-size="12">mobile20_0.1_warm / local_etx</text>
+<rect x="425" y="1854" width="257.28" height="20" fill="#2274a5"/>
+<line x1="830.0" x2="830.0" y1="1852" y2="1876" stroke="#c33" stroke-width="2"/>
+<text x="900" y="1868" font-family="sans-serif" font-size="12">0.572</text>
+<text x="20" y="1902" font-family="sans-serif" font-size="12">mobile20_0.1_warm / dp_hoplimit</text>
+<rect x="425" y="1888" width="435.40" height="20" fill="#2274a5"/>
+<line x1="830.0" x2="830.0" y1="1886" y2="1910" stroke="#c33" stroke-width="2"/>
+<text x="900" y="1902" font-family="sans-serif" font-size="12">0.968</text>
+<text x="20" y="1936" font-family="sans-serif" font-size="12">mobile20_0.1_warm / flooding</text>
+<rect x="425" y="1922" width="415.75" height="20" fill="#2274a5"/>
+<line x1="830.0" x2="830.0" y1="1920" y2="1944" stroke="#c33" stroke-width="2"/>
+<text x="900" y="1936" font-family="sans-serif" font-size="12">0.924</text>
+<text x="20" y="1970" font-family="sans-serif" font-size="12">mobile20_0.1_warm_churn / qgir</text>
+<rect x="425" y="1956" width="257.09" height="20" fill="#2274a5"/>
+<line x1="830.0" x2="830.0" y1="1954" y2="1978" stroke="#c33" stroke-width="2"/>
+<text x="900" y="1970" font-family="sans-serif" font-size="12">0.571</text>
+<text x="20" y="2004" font-family="sans-serif" font-size="12">mobile20_0.1_warm_churn / local_etx</text>
+<rect x="425" y="1990" width="256.74" height="20" fill="#2274a5"/>
+<line x1="830.0" x2="830.0" y1="1988" y2="2012" stroke="#c33" stroke-width="2"/>
+<text x="900" y="2004" font-family="sans-serif" font-size="12">0.571</text>
+<text x="20" y="2038" font-family="sans-serif" font-size="12">mobile20_0.1_warm_churn / dp_hoplimit</text>
+<rect x="425" y="2024" width="427.83" height="20" fill="#2274a5"/>
+<line x1="830.0" x2="830.0" y1="2022" y2="2046" stroke="#c33" stroke-width="2"/>
+<text x="900" y="2038" font-family="sans-serif" font-size="12">0.951</text>
+<text x="20" y="2072" font-family="sans-serif" font-size="12">mobile20_0.1_warm_churn / flooding</text>
+<rect x="425" y="2058" width="414.40" height="20" fill="#2274a5"/>
+<line x1="830.0" x2="830.0" y1="2056" y2="2080" stroke="#c33" stroke-width="2"/>
+<text x="900" y="2072" font-family="sans-serif" font-size="12">0.921</text>
+<text x="20" y="2106" font-family="sans-serif" font-size="12">mobile20_0.3_cold / qgir</text>
+<rect x="425" y="2092" width="245.42" height="20" fill="#2274a5"/>
+<line x1="830.0" x2="830.0" y1="2090" y2="2114" stroke="#c33" stroke-width="2"/>
+<text x="900" y="2106" font-family="sans-serif" font-size="12">0.545</text>
+<text x="20" y="2140" font-family="sans-serif" font-size="12">mobile20_0.3_cold / local_etx</text>
+<rect x="425" y="2126" width="245.64" height="20" fill="#2274a5"/>
+<line x1="830.0" x2="830.0" y1="2124" y2="2148" stroke="#c33" stroke-width="2"/>
+<text x="900" y="2140" font-family="sans-serif" font-size="12">0.546</text>
+<text x="20" y="2174" font-family="sans-serif" font-size="12">mobile20_0.3_cold / dp_hoplimit</text>
+<rect x="425" y="2160" width="433.77" height="20" fill="#2274a5"/>
+<line x1="830.0" x2="830.0" y1="2158" y2="2182" stroke="#c33" stroke-width="2"/>
+<text x="900" y="2174" font-family="sans-serif" font-size="12">0.964</text>
+<text x="20" y="2208" font-family="sans-serif" font-size="12">mobile20_0.3_cold / flooding</text>
+<rect x="425" y="2194" width="404.62" height="20" fill="#2274a5"/>
+<line x1="830.0" x2="830.0" y1="2192" y2="2216" stroke="#c33" stroke-width="2"/>
+<text x="900" y="2208" font-family="sans-serif" font-size="12">0.899</text>
+<text x="20" y="2242" font-family="sans-serif" font-size="12">mobile20_0.3_warm / qgir</text>
+<rect x="425" y="2228" width="241.57" height="20" fill="#2274a5"/>
+<line x1="830.0" x2="830.0" y1="2226" y2="2250" stroke="#c33" stroke-width="2"/>
+<text x="900" y="2242" font-family="sans-serif" font-size="12">0.537</text>
+<text x="20" y="2276" font-family="sans-serif" font-size="12">mobile20_0.3_warm / local_etx</text>
+<rect x="425" y="2262" width="239.45" height="20" fill="#2274a5"/>
+<line x1="830.0" x2="830.0" y1="2260" y2="2284" stroke="#c33" stroke-width="2"/>
+<text x="900" y="2276" font-family="sans-serif" font-size="12">0.532</text>
+<text x="20" y="2310" font-family="sans-serif" font-size="12">mobile20_0.3_warm / dp_hoplimit</text>
+<rect x="425" y="2296" width="430.19" height="20" fill="#2274a5"/>
+<line x1="830.0" x2="830.0" y1="2294" y2="2318" stroke="#c33" stroke-width="2"/>
+<text x="900" y="2310" font-family="sans-serif" font-size="12">0.956</text>
+<text x="20" y="2344" font-family="sans-serif" font-size="12">mobile20_0.3_warm / flooding</text>
+<rect x="425" y="2330" width="402.31" height="20" fill="#2274a5"/>
+<line x1="830.0" x2="830.0" y1="2328" y2="2352" stroke="#c33" stroke-width="2"/>
+<text x="900" y="2344" font-family="sans-serif" font-size="12">0.894</text>
+<text x="20" y="2378" font-family="sans-serif" font-size="12">mobile20_0.3_warm_churn / qgir</text>
+<rect x="425" y="2364" width="235.84" height="20" fill="#2274a5"/>
+<line x1="830.0" x2="830.0" y1="2362" y2="2386" stroke="#c33" stroke-width="2"/>
+<text x="900" y="2378" font-family="sans-serif" font-size="12">0.524</text>
+<text x="20" y="2412" font-family="sans-serif" font-size="12">mobile20_0.3_warm_churn / local_etx</text>
+<rect x="425" y="2398" width="239.14" height="20" fill="#2274a5"/>
+<line x1="830.0" x2="830.0" y1="2396" y2="2420" stroke="#c33" stroke-width="2"/>
+<text x="900" y="2412" font-family="sans-serif" font-size="12">0.531</text>
+<text x="20" y="2446" font-family="sans-serif" font-size="12">mobile20_0.3_warm_churn / dp_hoplimit</text>
+<rect x="425" y="2432" width="427.18" height="20" fill="#2274a5"/>
+<line x1="830.0" x2="830.0" y1="2430" y2="2454" stroke="#c33" stroke-width="2"/>
+<text x="900" y="2446" font-family="sans-serif" font-size="12">0.949</text>
+<text x="20" y="2480" font-family="sans-serif" font-size="12">mobile20_0.3_warm_churn / flooding</text>
+<rect x="425" y="2466" width="400.76" height="20" fill="#2274a5"/>
+<line x1="830.0" x2="830.0" y1="2464" y2="2488" stroke="#c33" stroke-width="2"/>
+<text x="900" y="2480" font-family="sans-serif" font-size="12">0.891</text>
+</svg>
