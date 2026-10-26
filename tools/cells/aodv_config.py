@@ -32,6 +32,21 @@ class AodvConfig:
     carry_min_gap_s: float = 2.0           # не чаще одного поиска к одному получателю за это время
     carry_poll_s: Optional[float] = None   # дополнительно повторять поиск раз в столько секунд (None — нет)
     piggyback: bool = False                # первый ждущий пакет едет внутри RREQ вместе с поиском
+    # Исследование 3: адаптация к загрузке канала
+    load_adaptive: bool = False            # узел измеряет занятость канала и при перегрузке экономит эфир
+    busy_window_s: float = 10.0            # окно измерения занятости канала, с
+    busy_threshold: float = 0.3            # «перегрузка» — канал занят дольше этой доли окна
+    load_no_piggyback: bool = True         # при перегрузке не класть данные в RREQ
+    load_supp_dups: Optional[int] = None   # при перегрузке не пересылать RREQ, если уже услышано столько копий
+    dc_aware_rreq: Optional[float] = None  # узел израсходовал эту долю своего лимита эфира — не пересылает RREQ,
+    dc_aware_min_dups: int = 1             #   если уже услышал столько копий (запрос и так идёт дальше)
+    # Исследование 4: надёжный RREQ
+    rreq_passive_ack: bool = False         # не услышал пересылку своего RREQ дальше и RREP — повторить RREQ
+    rreq_pack_timeout_s: float = 0.8       # сколько ждать пересылку после конца своей передачи, с
+    rreq_pack_retries: int = 1             # сколько раз повторять
+    rreq_pack_selective: bool = False      # повторять, только если промолчал кто-то из недавно слышанных соседей
+    rreq_pack_neighbor_s: float = 30.0     # «недавно слышанный» сосед — за последние столько секунд
+    rreq_pack_max_degree: Optional[int] = None  # повторять, только если у узла не больше стольких соседей (цепочка, мост)
     # HELLO
     hello_interval_s: Optional[float] = None   # None — без HELLO, обрыв определяется по отсутствию ACK
     allowed_hello_loss: int = 2

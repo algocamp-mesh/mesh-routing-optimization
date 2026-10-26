@@ -27,6 +27,9 @@ class AodvState:
         self.parked = {}                   # получатель -> True: путь не найден, пакеты ждут (carry)
         self.last_try = {}                 # получатель -> время последнего поиска
         self.riding = {}                   # получатель -> пакет, который едет внутри RREQ (piggyback)
+        self.heard_air = deque()           # (начало, длительность) кадров в эфире вокруг узла (занятость канала)
+        self.pack = {}                     # (источник, rreq_id) -> ждём пересылку нашего RREQ дальше
+        self.rreq_heard = OrderedDict()    # (источник, rreq_id) -> соседи, от которых слышали этот RREQ
 
 
 FIVE_YEARS_S = 5 * 365 * 24 * 3600
@@ -214,7 +217,7 @@ class AodvSimulator(Simulator):
         old = st.routes.get(dst)
         ctrl = dict(rreq_id=st.rreq_id, orig_seq=st.seq, dst_seq=old.seq if old else None, cost=0.0)
         size = self.cfg.header_bytes + self.ac.rreq_bytes
-        if self.ac.piggyback:
+        if self.ac.piggyback and not (self._overloaded(n) and self.ac.load_no_piggyback):
             rid = self._take_rider(n, dst)
             if rid is not None:
                 ctrl["data"] = rid
@@ -263,6 +266,56 @@ class AodvSimulator(Simulator):
                 self._fail(fr.pid, reason, definitive=True)
             return
         self._send_rreq(n, dst)
+
+    # Исследования 3–4: занятость канала и надёжный RREQ
+    def _start_tx(self, node, frame, dur):
+        super()._start_tx(node, frame, dur)
+        if self.ac.load_adaptive:                    # кадр слышат сам узел и все соседи в радиусе R
+            for m in [node.id] + [m for m, _ in self.neighbors(node.id)]:
+                self.aodv[m].heard_air.append((self.t, dur))
+        if self.ac.rreq_passive_ack and frame.kind == "RREQ" and frame.hop_limit > 1:
+            st = self.aodv[node.id]
+            key = (frame.src, frame.ctrl["rreq_id"])
+            pk = st.pack.setdefault(key, dict(frame=frame, hops=frame.hops, tries=0))
+            pk["token"] = pk.get("token", 0) + 1
+            self.at(self.t + dur + self.ac.rreq_pack_timeout_s, self._pack_check, node, key, pk["token"], node.epoch)
+
+    def _pack_check(self, node, key, token, epoch):
+        st = self.aodv[node.id]
+        pk = st.pack.get(key)
+        if node.epoch != epoch or pk is None or pk["token"] != token:
+            return
+        if pk["tries"] >= self.ac.rreq_pack_retries:
+            del st.pack[key]
+            return
+        known = {v for v, t in st.last_heard.items() if self.t - t <= self.ac.rreq_pack_neighbor_s} - {node.id}
+        if self.ac.rreq_pack_max_degree is not None and len(known) > self.ac.rreq_pack_max_degree:
+            del st.pack[key]                           # соседей много — запрос дойдёт и без повтора
+            self.stats["rreq_pack_skipped"] += 1
+            return
+        if self.ac.rreq_pack_selective:                # повторяем, только если кто-то из знакомых соседей молчал
+            if not known - st.rreq_heard.get(key, set()):
+                del st.pack[key]
+                self.stats["rreq_pack_skipped"] += 1
+                return
+        pk["tries"] += 1
+        self.stats["rreq_pack_resends"] += 1
+        self._enqueue_now(node, pk["frame"], epoch)
+
+    def _busy(self, n):
+        """Доля времени за окно, когда в эфире вокруг узла был кадр (по уровню сигнала, как CAD/RSSI)."""
+        log, W = self.aodv[n].heard_air, self.ac.busy_window_s
+        while log and log[0][0] + log[0][1] < self.t - W:
+            log.popleft()
+        return min(1.0, sum(min(d, s + d - (self.t - W)) for s, d in log) / W)
+
+    def _duty_used(self, node):
+        """Доля окна лимита эфира, которую узел уже занял своими передачами."""
+        W = self.cfg.duty_cycle_window_s
+        return sum(min(d, s + d - (self.t - W)) for s, d in node.tx_log if s + d > self.t - W) / W
+
+    def _overloaded(self, n):
+        return self.ac.load_adaptive and self._busy(n) > self.ac.busy_threshold
 
     # Гибрид: пакет едет в RREQ, «храни и неси»
     def _take_rider(self, n, dst):
@@ -358,6 +411,13 @@ class AodvSimulator(Simulator):
         key = (orig, c["rreq_id"])
         le = self._link_etx(r.id, u)
         cost, hops = c["cost"] + le, frame.hops + 1
+        pk = st.pack.get(key)
+        if pk is not None and frame.hops > pk["hops"]:  # наш RREQ переслали дальше
+            del st.pack[key]
+        if self.ac.rreq_pack_selective:
+            st.rreq_heard.setdefault(key, set()).add(u)
+            if len(st.rreq_heard) > self.ac.rreq_cache_capacity:
+                st.rreq_heard.popitem(last=False)
         if key in st.rreq_seen:                       # копия уже виденного запроса
             self.stats["rreq_duplicates"] += 1
             col = st.collect.get(key)
@@ -404,6 +464,14 @@ class AodvSimulator(Simulator):
         if self.ac.rreq_suppress_dups is not None and rb["dups"] >= self.ac.rreq_suppress_dups:
             self.stats["rreq_suppressed"] += 1
             return
+        if (self.ac.load_supp_dups is not None and rb["dups"] >= self.ac.load_supp_dups
+                and self._overloaded(r.id)):
+            self.stats["rreq_suppressed_load"] += 1
+            return
+        if (self.ac.dc_aware_rreq is not None and rb["dups"] >= self.ac.dc_aware_min_dups
+                and self._duty_used(r) > self.ac.dc_aware_rreq * self.cfg.duty_cycle_limit):
+            self.stats["rreq_suppressed_dc"] += 1
+            return
         self._enqueue_now(r, fwd, epoch)
 
     def _intermediate_reply(self, r, dst, orig, epoch):
@@ -438,6 +506,9 @@ class AodvSimulator(Simulator):
     def _on_rrep(self, r, frame, u):
         c = frame.ctrl
         hops, cost = frame.hops + 1, c["cost"] + self._link_etx(r.id, u)
+        st = self.aodv[r.id]
+        for key in [k for k in st.pack if k[0] == frame.dst]:   # ответ идёт — поиск дошёл до цели
+            del st.pack[key]
         if frame.dst == r.id:                          # ответ на наш поиск: пакет из RREQ уже доставлен
             self.aodv[r.id].riding.pop(frame.src, None)
         self._update_route(r.id, frame.src, u, hops, cost, c["dst_seq"], c["life"])    # прямой маршрут
@@ -586,7 +657,8 @@ class AodvSimulator(Simulator):
             out["air_share_" + k] = self.air[k] / air_total if air_total else 0.0
         for k in ("discoveries", "discovery_failed", "rrep_intermediate", "rreq_suppressed",
                   "link_breaks", "local_repairs", "rerr_sent", "hello_link_breaks",
-                  "piggybacked", "parked", "carry_wakeups", "carry_retries", "delivered_in_rreq"):
+                  "piggybacked", "parked", "carry_wakeups", "carry_retries", "delivered_in_rreq",
+                  "rreq_suppressed_load", "rreq_suppressed_dc", "rreq_pack_resends", "rreq_pack_skipped"):
             out[k] = self.stats[k]
         out["discovery_time_mean_s"] = (sum(self.discovery_times) / len(self.discovery_times)
                                         if self.discovery_times else float("nan"))
